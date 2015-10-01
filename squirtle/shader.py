@@ -20,7 +20,7 @@ class Shader(object):
     
     def source( self, source_string ):
         c = ctypes
-        buff = c.create_string_buffer(bytes(source_string,'utf-8'))
+        buff = c.create_string_buffer(source_string.encode('utf-8'))
         c_text = c.cast(c.pointer(c.pointer(buff)),
                         c.POINTER(c.POINTER(GLchar))) 
         glShaderSourceARB( self.shaderObject, 1, c_text, None )
