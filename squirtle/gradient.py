@@ -1,7 +1,7 @@
 from squirtle.parse import *
 from squirtle.matrix import *
-import squirtle.shader as shader
-import squirtle.shaders as shaders
+from squirtle import shader
+from squirtle import shaders
 
 vertex_shader_src = shaders.vertex
 radial_shader_src = shaders.radial
