@@ -34,7 +34,7 @@ def nextFile():
         next = filelist.index(prevFile)+1
         next %= len(filelist)
     filename = os.path.join('svgs', filelist[next])
-    print 'Parsing', filename
+    print( 'Parsing', filename)
     svgObj = squirtle.SVG(filename)
     svgObj.anchor_x, svgObj.anchor_y = svgObj.width/2, svgObj.height/2
 
