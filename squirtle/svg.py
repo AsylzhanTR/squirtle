@@ -19,14 +19,14 @@ import math
 from ctypes import CFUNCTYPE, POINTER, byref, cast, c_char_p
 import sys
 import string
-import shader
+from squirtle import shader
 import ctypes
 
-from matrix import *
-from parse import *
-from gradient import *
+from squirtle.matrix import *
+from squirtle.parse import *
+from squirtle.gradient import *
 
-print  cast(glGetString(GL_SHADING_LANGUAGE_VERSION), c_char_p).value
+print( cast(glGetString(GL_SHADING_LANGUAGE_VERSION), c_char_p).value )
 
 tess = gluNewTess()
 gluTessNormal(tess, 0, 0, 1)
@@ -77,7 +77,7 @@ class SvgPath(object):
         self.id = path_id
         self.title = title
         self.description = desc
-        print "PATH", self.path
+        print( "PATH", self.path)
         
         
     def __repr__(self):
@@ -243,7 +243,7 @@ class SVG(object):
                 for loop in path:
                     self.n_lines += len(loop) - 1
                     loop_plus = []
-                    for i in xrange(len(loop) - 1):
+                    for i in range(len(loop) - 1):
                         loop_plus += [loop[i], loop[i+1]]
                     if isinstance(stroke, str):
                         g = self.gradients[stroke]
@@ -289,8 +289,8 @@ class SVG(object):
         for e in self.tree._root.getchildren():
             try:
                 self.parse_element(e)
-            except Exception, ex:
-                print 'Exception while parsing element', e
+            except Exception as ex:
+                print( 'Exception while parsing element', e)
                 raise
             
     def parse_element(self, e):
@@ -436,7 +436,7 @@ class SVG(object):
             cy = float(e.get('cy'))
             r = float(e.get('r'))
             self.new_path()
-            for i in xrange(self.circle_points):
+            for i in range(self.circle_points):
                 theta = 2 * i * math.pi / self.circle_points
                 self.line_to(cx + r * math.cos(theta), cy + r * math.sin(theta))
             self.close_path()
@@ -447,7 +447,7 @@ class SVG(object):
             rx = float(e.get('rx'))
             ry = float(e.get('ry'))
             self.new_path()
-            for i in xrange(self.circle_points):
+            for i in range(self.circle_points):
                 theta = 2 * i * math.pi / self.circle_points
                 self.line_to(cx + rx * math.cos(theta), cy + ry * math.sin(theta))
             self.close_path()
@@ -459,8 +459,8 @@ class SVG(object):
         for c in e.getchildren():
             try:
                 self.parse_element(c)
-            except Exception, ex:
-                print 'Exception while parsing element', c
+            except Exception as ex:
+                print( 'Exception while parsing element', c)
                 raise
         self.transform = oldtransform
         self.opacity = oldopacity                        
@@ -517,7 +517,7 @@ class SVG(object):
         if not sweep and delta > 0: delta -= math.pi * 2
         n_points = max(int(abs(self.circle_points * delta / (2 * math.pi))), 1)
         
-        for i in xrange(n_points + 1):
+        for i in range(n_points + 1):
             theta = psi + i * delta / n_points
             ct = math.cos(theta)
             st = math.sin(theta)
@@ -526,7 +526,7 @@ class SVG(object):
 
     def curve_to(self, x1, y1, x2, y2, x, y):
         if not self.bezier_coefficients:
-            for i in xrange(self.bezier_points+1):
+            for i in range(self.bezier_points+1):
                 t = float(i)/self.bezier_points
                 t0 = (1 - t) ** 3
                 t1 = 3 * t * (1 - t) ** 2
@@ -635,4 +635,4 @@ class SVG(object):
         return tlist       
 
     def warn(self, message):
-        print "Warning: SVG Parser (%s) - %s" % (self.filename, message)
+        print( "Warning: SVG Parser (%s) - %s" % (self.filename, message))

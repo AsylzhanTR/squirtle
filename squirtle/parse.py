@@ -32,7 +32,7 @@ def parse_color(c, default=None):
         else:
             raise Exception("Incorrect length for colour " + str(c) + " length " + str(len(c)))            
         return [r,g,b,255]
-    except Exception, ex:
-        print 'Exception parsing color', ex
+    except Exception as ex:
+        print( 'Exception parsing color', ex)
         return None
         

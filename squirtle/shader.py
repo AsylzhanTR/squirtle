@@ -20,19 +20,19 @@ class Shader(object):
     
     def source( self, source_string ):
         c = ctypes
-        buff = c.create_string_buffer(source_string)
+        buff = c.create_string_buffer(bytes(source_string,'utf-8'))
         c_text = c.cast(c.pointer(c.pointer(buff)),
                         c.POINTER(c.POINTER(GLchar))) 
         glShaderSourceARB( self.shaderObject, 1, c_text, None )
     
     def compileShader( self ):
         glCompileShader( self.shaderObject )
-        rval = ctypes.c_long()
+        rval = ctypes.c_int()
         glGetObjectParameterivARB (self.shaderObject, GL_OBJECT_COMPILE_STATUS_ARB, ctypes.pointer(rval))
         if rval:
-            print "%s compiled successfuly." % (self.name)
+            print( "%s compiled successfuly." % (self.name))
         else:
-            print "Compile failed on shader %s: " % (self.name)
+            print( "Compile failed on shader %s: " % (self.name))
             self.printInfoLog( ) 
     
     
@@ -49,7 +49,7 @@ class Shader(object):
         return c.string_at(c_text)
     
     def printInfoLog( self ):
-        print self.infoLog()
+        print( self.infoLog())
 
 class UniformVar(object):
     def __init__(self, set_function, name, *args ):
@@ -78,7 +78,7 @@ class Program( object ):
     def detachShader( self, shader ):
         self.shaders.remove( shader )
         glDetachObjectARB( self.programObject, shader.shaderObject )
-        print "Shader detached"
+        print( "Shader detached")
     
     def link( self ):
         glLinkProgramARB( self.programObject )
@@ -137,11 +137,11 @@ class Program( object ):
             self.uniformVars[name].set()
     
     def setVars(self):
-        for name, var in self.uniformVars.iteritems():
+        for name, var in iter(self.uniformVars.items()):
             var.set()
     
     def printInfoLog( self ):
-        print glGetInfoLogARB (self.programObject )
+        print( glGetInfoLogARB (self.programObject ))
 
 
 def MakePixelShaderFromSource ( src ):

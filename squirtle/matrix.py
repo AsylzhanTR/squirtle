@@ -1,6 +1,6 @@
 import math
 import ctypes
-from parse import *
+from squirtle.parse import *
 
 class Matrix(object):
     def __init__(self, string=None):
